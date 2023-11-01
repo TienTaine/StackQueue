@@ -1,0 +1,37 @@
+﻿#ifndef stack_h
+#define stack_h
+
+template <class T>
+class Node {
+public:
+	T data;
+	Node<T>* next;
+	Node(Node<T>& other)
+	{
+		this->data = other.getData();
+		//this->next = NULL;
+	}
+};
+
+template <class T>
+class Stack {
+private:
+	Node<T>* top;
+
+public:
+	Stack();				    // constructor
+	Stack(const Stack&);		// copy constructor
+	~Stack();				    // destructor
+
+	// operations
+	bool isEmpty() const;		// check empty
+	void push(const T&);		// thêm phần tử vào 
+	void pop();					// xoá phần tử top
+	T topValue() const;			// lấy ra giá trị phần tử top
+
+	// assign operator
+	Stack<T>& operator=(const Stack<T>&);  // định nghĩa toán tử = cho 2 stack
+};
+#include "stack.cpp"
+
+#endif
