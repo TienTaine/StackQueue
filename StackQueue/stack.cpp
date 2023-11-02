@@ -13,18 +13,20 @@ template class Stack<double>;
 template <class T>
 Stack<T>::Stack()
 {
-	top = NULL;
+	//cout << "Stack was created!!!" << endl;
+	this->_top = NULL;
 }
 
 template <class T>
 Stack<T>::~Stack()
 {
-	while (top != NULL)
+	while (this->_top != NULL)
 	{
-		Node<T>* temp = top;
-		top = top->next;
+		Node<T>* temp = this->_top;
+		this->_top = this->_top->_pNext;
 		delete temp;
 	}
+	//cout << "Stack was deleted!!!" << endl;
 }
 
 /*
@@ -36,58 +38,68 @@ Như vậy, mỗi khi khởi tạo một đối tượng Stack từ một đối
 template <class T>
 Stack<T>::Stack(const Stack<T>& other)
 {
-	if (other.top == NULL)
+	if (other._top == NULL)
 	{
+		this->_top = NULL;
 		return;
 	}
 
 	// copy từng phần tử từ other sang 
-	Node<T>* current = new Node<T>(other.top->data);
+	Node<T>* current = other._top;
+
 	while (current != nullptr)
 	{
-		push(current->data);
-		current = current->next;
+		push(current->_data);
+		current = current->_pNext;
 	}
+
+	cout << "Copied !!!" << endl;
 }
 
 template <class T>
 bool Stack<T>::isEmpty() const
 {
-	return top == NULL;
+	return this->_top == NULL;
 }
 
 
 template <class T>
-void Stack<T>::push(const T& data)
+void Stack<T>::push(const T data)
 {
 	Node<T>* newNode = new Node<T>;
-	newNode->data = data;
-	newNode->next = NULL;
-	top = newNode;
+	newNode->_data = data;
+
+	// Avoid NULL case
+	if (this->_top == NULL)
+		newNode->_pNext = NULL; // First element added
+	else
+		newNode->_pNext = this->_top->_pNext; // Link newNode.pNext to seconde Node
+	this->_top = newNode;
+	//cout << "Push succesfully!!!" << endl;
 }
 
 template <class T>
-void Stack<T>::pop()
+T Stack<T>::pop()
 {
-	if (top == NULL) {
-		cout << "Stack is empty!!!" << endl;
-		return;
+	if (this->_top == NULL) {
+		cout << "Cannot pop. Stack is empty!!!" << endl;
+		return NULL;
 	}
-	Node<T>* temp = top;
-	top = top->next;
-	delete temp;
+	Node<T>* temp = this->_top;
+	this->_top = this->_top->_pNext;
+	return temp->_data;
 }
 
 template <class T>
 T Stack<T>::topValue() const
 {
-	if (top == NULL) {
-		cout << "Stack is empty" << endl;
-		return -1;
+	if (this->_top == NULL) {
+		cout << "Cannot get top value. Stack is empty!!!" << endl;
+		return -10;
 	}
 	else
 	{
-		return top->data;
+		return this->_top->_data;
 	}
 }
 
@@ -107,26 +119,29 @@ Stack<T>& Stack<T>::operator=(const Stack<T>& other)
 	if (this != &other)
 	{
 		// xóa các node của stack hiện tại
-		while (this.top != NULL)
+		while (this->_top != NULL)
 		{
-			Node<T>* temp = this.top;
-			this.top = this.top->next;
+			Node<T>* temp = this->_top;
+			this->_top = this->_top->_pNext;
 			delete temp;
 		}
 
 		// copy các node từ other sang
-		if (other.top == NULL)
+		if (other._top == NULL)
 		{
-			this.top = NULL;
+			this->_top = NULL;
 		}
-		else {
-			Node<T>* current = new Node<T>(other.top->data);
+		else 
+		{
+			Node<T>* current =other._top;
 			while (current != nullptr)
 			{
-				push(current->data);
-				current = current->next;
+				push(current->_data);
+				current = current->_pNext;
 			}
 		}
+
+		cout << "Copied by operator !!!" << endl;
 	}
 
 	return *this;

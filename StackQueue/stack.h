@@ -1,32 +1,29 @@
 ﻿#ifndef stack_h
 #define stack_h
 
+//========= NODE
+
 template <class T>
-class Node {
-public:
-	T data;
-	Node<T>* next;
-	Node(Node<T>& other)
-	{
-		this->data = other.getData();
-		//this->next = NULL;
-	}
+struct Node {
+	T _data;
+	Node<T>* _pNext;
 };
+
+//========= STACK
 
 template <class T>
 class Stack {
-private:
-	Node<T>* top;
-
 public:
+	Node<T>* _top;
+
 	Stack();				    // constructor
 	Stack(const Stack&);		// copy constructor
 	~Stack();				    // destructor
 
 	// operations
 	bool isEmpty() const;		// check empty
-	void push(const T&);		// thêm phần tử vào 
-	void pop();					// xoá phần tử top
+	void push(const T);		// thêm phần tử vào 
+	T pop();	// xoá phần tử top
 	T topValue() const;			// lấy ra giá trị phần tử top
 
 	// assign operator
